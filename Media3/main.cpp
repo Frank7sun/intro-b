@@ -58,7 +58,7 @@ int main(void)
 	// 検出されたマーカーの位置を格納する配列
 	std::vector<std::vector<cv::Point2f>> corners;
 
-	bool flag = false;
+	int flag = 0;
 
 	//回復アイテム
 	item heal1(10, 3, 1, 1, "回復薬(小)");
@@ -71,8 +71,8 @@ int main(void)
 		//frameからマーカーを検出し、位置をcorners, IDをidsに格納する
 		cv::aruco::detectMarkers(input, dictionary, corners, ids);
 		// 検出したマーカーの場所を囲みIDを付してframeに格納する
-		if (ids.size() > 0 && !flag) {
-			flag = true;
+		if (ids.size() > 0 && flag >= 30) {
+			flag = 0;
 			//検出したマーカーのidが10~19の場合 回復薬使用
 			if (ids[0] >= 10 && ids[0] <= 19) {
 				//検出したマーカーの位置を囲む
@@ -88,6 +88,7 @@ int main(void)
 					heal1.amount--;
 				}
 				else {
+					sprintf_s(mmd_camera->camera, "emptyItem");
 					printf("EMPTY_ITEM %d\n", ids[0]);
 				}
 				/*検出したマーカーの位置を画面に表示
@@ -99,9 +100,10 @@ int main(void)
 			}
 			//cv::aruco::drawDetectedMarkers(input, corners, ids);
 			printf("marker: %d\n", ids[0]);
+			cv::waitKey(10);
 		}
-		else if (ids.size() == 0) {
-			flag = false;
+		else{
+			flag++;
 		}
 
 		int key = cv::waitKey(15);/* キー入力，数値は入力待ち時間(ミリ秒)*/
