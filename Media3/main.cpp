@@ -62,6 +62,7 @@ int main(void)
 
 	//回復アイテム
 	item heal1(10, 3, 1, 1, "回復薬(小)");
+	item attack1(20, 3, 1, 2, "攻撃薬(小)");
 
 	while (1) {
 		cv::Mat input;
@@ -101,6 +102,19 @@ int main(void)
 			//cv::aruco::drawDetectedMarkers(input, corners, ids);
 			printf("marker: %d\n", ids[0]);
 			cv::waitKey(10);
+		}
+		else if (ids[0] >= 20 && ids[0] <= 29) {
+			if (attack1.amount >= 1) {
+				//mmdにメッセージを送る
+				sprintf_s(mmd_camera->camera, "item_%d", ids[0]);
+				printf("item_used: %d\nleft: %d\n", ids[0], attack1.amount);
+				//itemのamountを減らす
+				attack1.amount--;
+			}
+			else {
+				sprintf_s(mmd_camera->camera, "emptyItem");
+				printf("EMPTY_ITEM %d\n", ids[0]);
+			}
 		}
 		else{
 			flag++;
