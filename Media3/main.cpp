@@ -109,11 +109,11 @@ int main(void)
 			if (ids[0] >= 10 && ids[0] <= 19) {
 				//回復アイテムのamountが１以上であるか
 				if (heal1.amount >= 1) {
+					//itemのamountを減らす
+					heal1.amount--;
 					//mmdにメッセージを送る
 					sprintf_s(mmd_camera->camera, "item_%d", ids[0]);
 					printf("item_used: %d\nleft: %d\n", ids[0], heal1.amount);
-					//itemのamountを減らす
-					heal1.amount--;
 				}
 				else {
 					sprintf_s(mmd_camera->camera, "emptyItem");
@@ -129,11 +129,11 @@ int main(void)
 			}
 			else if (ids[0] >= 20 && ids[0] <= 29) {
 				if (attack1.amount >= 1) {
+					//itemのamountを減らす
+					attack1.amount--;
 					//mmdにメッセージを送る
 					sprintf_s(mmd_camera->camera, "item_%d", ids[0]);
 					printf("item_used: %d\nleft: %d\n", ids[0], attack1.amount);
-					//itemのamountを減らす
-					attack1.amount--;
 				}
 				else {
 					sprintf_s(mmd_camera->camera, "emptyItem");
