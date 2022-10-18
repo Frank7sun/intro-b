@@ -42,7 +42,7 @@ int main(void)
 
 	/**************↓適宜変更する*******************/
 
-	cv::VideoCapture capture = cv::VideoCapture(5);/* カメラが2台ある場合は数値で指定 */
+	cv::VideoCapture capture = cv::VideoCapture(1);/* カメラが2台ある場合は数値で指定 */
 	if (!capture.isOpened())
 	{
 		std::cerr << "Camera not found";
