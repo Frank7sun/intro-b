@@ -60,9 +60,22 @@ int main(void)
 
 	int flag = 0;
 
-	//回復アイテム
+	//アイテムの宣言 item 名前, id, amount, tier(1|2|3), type(0:数字 1:回復 2:攻撃 3:防御 4:フラグ)
+	item number0(0, 0, 1, 0,"0");
+	
 	item heal1(10, 3, 1, 1, "回復薬(小)");
+	item heal2(11, 2, 2, 1, "回復薬(中)");
+	item heal3(12, 1, 3, 1, "回復薬(大)");
+	
 	item attack1(20, 3, 1, 2, "攻撃薬(小)");
+	item attack2(21, 2, 2, 2, "攻撃薬(中)");
+	item attack3(22, 1, 3, 2, "攻撃薬(大)");
+	
+	item defend1(30, 3, 1, 3, "防御薬(小)");
+	item defend2(31, 2, 2, 3, "防御薬(中)");
+	item defend3(32, 1, 3, 3, "防御薬(大)");
+	
+	item flag1(40, 1, 1, 4, "フラグ1");
 
 	while (1) {
 		cv::Mat input;
@@ -99,22 +112,22 @@ int main(void)
 				mmd_camera->y = center.y;
 				mmd_camera->id = ids[0]; */
 			}
+			else if (ids[0] >= 20 && ids[0] <= 29) {
+				if (attack1.amount >= 1) {
+					//mmdにメッセージを送る
+					sprintf_s(mmd_camera->camera, "item_%d", ids[0]);
+					printf("item_used: %d\nleft: %d\n", ids[0], attack1.amount);
+					//itemのamountを減らす
+					attack1.amount--;
+				}
+				else {
+					sprintf_s(mmd_camera->camera, "emptyItem");
+					printf("EMPTY_ITEM %d\n", ids[0]);
+				}
+			}
 			//cv::aruco::drawDetectedMarkers(input, corners, ids);
 			printf("marker: %d\n", ids[0]);
 			cv::waitKey(10);
-		}
-		else if (ids[0] >= 20 && ids[0] <= 29) {
-			if (attack1.amount >= 1) {
-				//mmdにメッセージを送る
-				sprintf_s(mmd_camera->camera, "item_%d", ids[0]);
-				printf("item_used: %d\nleft: %d\n", ids[0], attack1.amount);
-				//itemのamountを減らす
-				attack1.amount--;
-			}
-			else {
-				sprintf_s(mmd_camera->camera, "emptyItem");
-				printf("EMPTY_ITEM %d\n", ids[0]);
-			}
 		}
 		else{
 			flag++;
