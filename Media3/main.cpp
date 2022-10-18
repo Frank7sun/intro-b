@@ -2,6 +2,7 @@
 #include "aruco/include/opencv2/aruco.hpp"
 #include "sharemem.h"
 #include <Windows.h>
+#include <regex>
 
 
 using namespace std;
@@ -58,7 +59,10 @@ int main(void)
 	// 検出されたマーカーの位置を格納する配列
 	std::vector<std::vector<cv::Point2f>> corners;
 
+	//マーカーが複数回検知されないためのフラグ
 	int flag = 0;
+	//マーカー検知するべきかどうか
+	bool markerActive = false;
 
 	//アイテムの宣言 item 名前, id, amount, tier(1|2|3), type(0:数字 1:回復 2:攻撃 3:防御 4:フラグ)
 	item number0(0, 0, 1, 0,"0");
@@ -84,15 +88,25 @@ int main(void)
 		cv::imshow("input", input);/* カメラより得られた画像inputを画面出力*/
 		//frameからマーカーを検出し、位置をcorners, IDをidsに格納する
 		cv::aruco::detectMarkers(input, dictionary, corners, ids);
-		// 検出したマーカーの場所を囲みIDを付してframeに格納する
-		if (ids.size() > 0 && flag >= 30) {
+
+		//std::regex regex("SYNTH_START\|mei\|mei_voice_normal\|こん.*");
+		// マーカーの入力を受け付けているか
+		/*if (std::regex_search(mmd_camera->event, regex)) {
+			markerActive = true;
+			printf("MMDRECEIVED\n");
+			printf("%s\n", mmd_camera->event);
+		} */
+
+		markerActive = true;
+		if (ids.size() > 0 && flag >= 30 && markerActive==true) {
 			flag = 0;
+			//検出したマーカーの位置を囲む
+			cv::aruco::drawDetectedMarkers(input, corners, ids);
+			//検出したマーカーの位置を取得
+			cv::Point2f center = corners[0][0];
+			
 			//検出したマーカーのidが10~19の場合 回復薬使用
 			if (ids[0] >= 10 && ids[0] <= 19) {
-				//検出したマーカーの位置を囲む
-				cv::aruco::drawDetectedMarkers(input, corners, ids);
-				//検出したマーカーの位置を取得
-				cv::Point2f center = corners[0][0];
 				//回復アイテムのamountが１以上であるか
 				if (heal1.amount >= 1) {
 					//mmdにメッセージを送る
@@ -105,6 +119,7 @@ int main(void)
 					sprintf_s(mmd_camera->camera, "emptyItem");
 					printf("EMPTY_ITEM %d\n", ids[0]);
 				}
+				markerActive = false;
 				/*検出したマーカーの位置を画面に表示
 				cv::putText(input, std::to_string(ids[0]), center, cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
 				検出したマーカーの位置を共有メモリに格納
@@ -124,6 +139,7 @@ int main(void)
 					sprintf_s(mmd_camera->camera, "emptyItem");
 					printf("EMPTY_ITEM %d\n", ids[0]);
 				}
+				markerActive = false;
 			}
 			//cv::aruco::drawDetectedMarkers(input, corners, ids);
 			printf("marker: %d\n", ids[0]);
@@ -132,6 +148,8 @@ int main(void)
 		else{
 			flag++;
 		}
+		printf("%d\n", flag);
+		//printf("%s\n", mmd_camera->event);
 
 		int key = cv::waitKey(15);/* キー入力，数値は入力待ち時間(ミリ秒)*/
 
