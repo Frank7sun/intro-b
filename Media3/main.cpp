@@ -145,7 +145,7 @@ int main(void)
 			printf("marker: %d\n", ids[0]);
 			cv::waitKey(10);
 		}
-		else{
+		else if (ids.size() == 0) {
 			flag++;
 		}
 		printf("%d\n", flag);
