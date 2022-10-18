@@ -147,8 +147,9 @@ int main(void)
 		}
 		else if (ids.size() == 0) {
 			flag++;
+			printf("%d\n", flag);
 		}
-		printf("%d\n", flag);
+		//printf("%d\n", flag);
 		//printf("%s\n", mmd_camera->event);
 
 		int key = cv::waitKey(15);/* キー入力，数値は入力待ち時間(ミリ秒)*/
