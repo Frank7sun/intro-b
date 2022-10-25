@@ -62,22 +62,22 @@ int main(void)
 	//マーカーが複数回検知されないためのフラグ
 	int flag = 0;
 	//マーカー検知するべきかどうか
-	bool markerActive = false;
+	int markerMode = 0;
 
 	//アイテムの宣言 item 名前, id, amount, tier(1|2|3), type(0:数字 1:回復 2:攻撃 3:防御 4:フラグ)
 	item number0(0, 0, 1, 0,"0");
 	
-	item heal1(10, 3, 1, 1, "回復薬(小)");
-	item heal2(11, 2, 2, 1, "回復薬(中)");
-	item heal3(12, 1, 3, 1, "回復薬(大)");
+	item heal1(10, 0, 1, 1, "HealHP(small)");
+	item heal2(11, 0, 2, 1, "HealHP(medium)");
+	item heal3(12, 0, 3, 1, "HealHP(large)");
 	
-	item attack1(20, 3, 1, 2, "攻撃薬(小)");
-	item attack2(21, 2, 2, 2, "攻撃薬(中)");
-	item attack3(22, 1, 3, 2, "攻撃薬(大)");
+	item attack1(20, 0, 1, 2, "AttackIncrease(small)");
+	item attack2(21, 0, 2, 2, "AttackIncrease(medium)");
+	item attack3(22, 0, 3, 2, "AttackIncrease(large)");
 	
-	item defend1(30, 3, 1, 3, "防御薬(小)");
-	item defend2(31, 2, 2, 3, "防御薬(中)");
-	item defend3(32, 1, 3, 3, "防御薬(大)");
+	item defend1(30, 3, 1, 3, "DefendIncrease(small)");
+	item defend2(31, 2, 2, 3, "DefendIncrease(medium)");
+	item defend3(32, 1, 3, 3, "DefendIncrease(large)");
 	
 	item flag1(40, 1, 1, 4, "フラグ1");
 
@@ -92,13 +92,29 @@ int main(void)
 		//std::regex regex("SYNTH_START\|mei\|mei_voice_normal\|こん.*");
 		// マーカーの入力を受け付けているか
 		/*if (std::regex_search(mmd_camera->event, regex)) {
-			markerActive = true;
+			markerMode = true;
 			printf("MMDRECEIVED\n");
 			printf("%s\n", mmd_camera->event);
 		} */
 
-		markerActive = true;
-		if (ids.size() > 0 && flag >= 30 && markerActive==true) {
+		markerMode = 1;
+		
+		if (ids.size() > 0 && flag >= 30 && markerMode == 1) {
+			flag = 0;
+			//マーカーのIDによって処理を分岐
+			switch (ids[0]) {
+			case 10:
+				heal1.amount += 1;
+				printf("%sが追加され%d個になりました\n", heal1.name.c_str(), heal1.amount);
+				cv::waitKey(0);
+
+			case 20:
+				attack1.amount += 1;
+				printf("%sが追加され%d個になりました\n", attack1.name.c_str(), attack1.amount);
+			}
+		}
+
+		if (ids.size() > 0 && flag >= 30 && markerMode==2) {
 			flag = 0;
 			//検出したマーカーの位置を囲む
 			cv::aruco::drawDetectedMarkers(input, corners, ids);
@@ -119,7 +135,7 @@ int main(void)
 					sprintf_s(mmd_camera->camera, "emptyItem");
 					printf("EMPTY_ITEM %d\n", ids[0]);
 				}
-				markerActive = false;
+				markerMode = 0;
 				/*検出したマーカーの位置を画面に表示
 				cv::putText(input, std::to_string(ids[0]), center, cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
 				検出したマーカーの位置を共有メモリに格納
@@ -139,7 +155,7 @@ int main(void)
 					sprintf_s(mmd_camera->camera, "emptyItem");
 					printf("EMPTY_ITEM %d\n", ids[0]);
 				}
-				markerActive = false;
+				markerMode = 0;
 			}
 			//cv::aruco::drawDetectedMarkers(input, corners, ids);
 			printf("marker: %d\n", ids[0]);
