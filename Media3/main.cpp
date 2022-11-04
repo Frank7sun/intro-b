@@ -73,6 +73,7 @@ cv::Mat getMat(HWND hWND) {
 
 int marker[200];
 
+//読み取ったマーカーがのidに応じてitem idを返す
 int getItemId(int ids) {
 	if (ids >= 10 && ids <= 19) {
 		marker[ids] = 1;
@@ -83,6 +84,7 @@ int getItemId(int ids) {
 	}
 }
 
+//引数のidが使用済みかチェック
 bool idCheck(int ids){
 	if (marker[ids] == 1) {
 		return false;
