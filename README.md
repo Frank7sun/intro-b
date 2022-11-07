@@ -11,8 +11,8 @@
 2: アイテム使用  
 
 ## MMDに送信するメッセージ
-画面上のマーカーでモードが変更されたとき
-MMD_CAMERA_GET|mode_changed
+画面上のマーカーでモードが変更されたとき  
+MMD_CAMERA_GET|mode_changed  
 
 アイテムが登録されたとき  
 MMD_CAMERA_GET|item_registerd  
