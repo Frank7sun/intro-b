@@ -31,46 +31,6 @@ public:
 	}
 };
 
-/*
-cv::Mat getMat(HWND hWND) {
-	HDC deviceContext = GetDC(hWND);
-	HDC memoryDeviceContext = CreateCompatibleDC(deviceContext);
-	
-	RECT windowRect;
-	GetClientRect(hWND, &windowRect);
-
-	int height = windowRect.bottom;
-	int width = windowRect.right;
-
-	HBITMAP bitmap = CreateCompatibleBitmap(deviceContext, width, height);
-	
-	SelectObject(memoryDeviceContext, bitmap);
-	
-	BitBlt(memoryDeviceContext, 0, 0, width, height, deviceContext, 0, 0, SRCCOPY);
-	
-	BITMAPINFOHEADER bi;
-	bi.biSize = sizeof(BITMAPINFOHEADER);
-	bi.biWidth = width;
-	bi.biHeight = -height;
-	bi.biPlanes = 1;
-	bi.biBitCount = 32;
-	bi.biCompression = BI_RGB;
-	bi.biSizeImage = 0;
-	bi.biXPelsPerMeter = 1;
-	bi.biYPelsPerMeter = 2;
-	bi.biClrUsed = 3;
-	bi.biClrImportant = 4;
-
-	cv::Mat mat = cv::Mat(height, width, CV_8UC4);
-	return mat;
-	GetDIBits(memoryDeviceContext, bitmap, 0, height, mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-
-	DeleteObject(bitmap);
-	DeleteDC(memoryDeviceContext);
-	ReleaseDC(hWND, deviceContext);
-}
-*/
-
 int marker[200];
 
 //読み取ったマーカーがのidに応じてitem idを返す
@@ -129,16 +89,6 @@ int main(void)
 	cv::namedWindow("Screenshot", cv::WINDOW_NORMAL);
 	cv::resizeWindow("Screenshot", GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
 	
-	/*
-	LPCTSTR windowTitle = "MMDAgent - Toolkit for building voice interaction systems";
-	HWND hWND = FindWindow(NULL, windowTitle);
-	while (!hWND) {
-		std::system("cls");
-		std::cout << "Start the MMD..." << std::endl;
-		HWND hwnd = FindWindow(NULL, windowTitle);
-		Sleep(100);
-	}
-	*/
 
 	/**************↓適宜変更する*******************/
 
@@ -188,7 +138,6 @@ int main(void)
 	//std::string event = mmd_camera->event;
 	//event = "";
 	
-	//cv::namedWindow("output", cv::WINDOW_NORMAL);
 
 	while (1) {
 		cv::Mat input;
@@ -213,10 +162,13 @@ int main(void)
 			if (mmdIds[0] == 1) {
 				markerMode = 1;
 				printf("Register Mode Enabled\n");
+				sprintf_s(mmd_camera->camera, "mode_changed");
 			}
 			else if (mmdIds[0] == 2) {
 				markerMode = 2;
 				printf("Use Mode Enabled\n");
+				sprintf_s(mmd_camera->camera, "mode_changed");
+
 			}
 			else if (mmdIds[0] == 0) {
 				markerMode = 0;
