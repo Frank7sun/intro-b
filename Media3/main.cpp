@@ -5,6 +5,7 @@
 #include <regex>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <Windows.h>
 
 
 using namespace std;
@@ -138,7 +139,12 @@ int main(void)
 	//std::string event = mmd_camera->event;
 	//event = "";
 	
-
+	int musicFlag = 0;
+	int prevMusicFlag = musicFlag;
+	
+	//音楽再生
+	PlaySound("default_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	
 	while (1) {
 		cv::Mat input;
 		capture >> input;
@@ -156,7 +162,7 @@ int main(void)
 		//frameからマーカーを検出し、位置をcorners, IDをidsに格納する
 		cv::aruco::detectMarkers(input, dictionary, corners, ids);
 		cv::aruco::detectMarkers(monitor_img, dictionary, mmdcorners, mmdIds);
-		
+
 		// マーカーの入力を受け付けているか
 		if (mmdIds.size() > 0) {
 			if (mmdIds[0] == 1) {
@@ -174,9 +180,35 @@ int main(void)
 				markerMode = 0;
 				printf("Marker Mode Disabled\n");
 			}
+			else if (mmdIds[0] == 10) {
+				musicFlag == 0;
+				printf("MF0");
+			}
+			else if (mmdIds[0] == 11) {
+				musicFlag == 1;
+				printf("MF1");
+			}
+			else if (mmdIds[0] == 12) {
+				musicFlag == 2;
+				printf("MF2");
+			}
 		}
 
-		
+		//音楽再生する 変数が変化していない場合は変更しない
+		if (musicFlag != prevMusicFlag) {
+			if (musicFlag == 0) {
+				//PlaySound(NULL, 0, 0);
+				PlaySound("default_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+			}
+			else if (musicFlag == 1) {
+				//PlaySound(NULL, 0, 0);
+				PlaySound("battle_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+			}
+			else if (musicFlag == 2) {
+				//PlaySound(NULL, 0, 0);
+				PlaySound("boss_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+			}
+		}
 
 		/*
 		正規表現でやろうとしたけどうまくいかんかった
@@ -202,6 +234,7 @@ int main(void)
 					heal1.amount += 1;
 					printf("%sが追加され%d個になりました\n", heal1.name.c_str(), heal1.amount);
 					sprintf_s(mmd_camera->camera, "item_registerd");
+					PlaySound("get.wav", NULL, SND_FILENAME);
 					break;
 
 				case 20:
@@ -255,8 +288,11 @@ int main(void)
 			cv::aruco::drawDetectedMarkers(input, corners, ids);
 			printf("marker: %d\n", ids[0]);
 		}
+		
 		//printf("%d\n", flag);
 		//printf("%s\n", mmd_camera->event);
+
+		prevMusicFlag = musicFlag;
 
 		int key = cv::waitKey(15);/* キー入力，数値は入力待ち時間(ミリ秒)*/
 

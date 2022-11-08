@@ -36,3 +36,16 @@ MMDにメッセージ送信
 ### アイテム使用モード  
 カメラに写ったマーカーの対応するアイテムの残量を確認  
 残量があれば-1しMMDにメッセージ送信  
+
+
+#### BGM
+default  
+https://dova-s.jp/bgm/play17549.html  
+boss  
+https://dova-s.jp/bgm/play1788.html  
+battle  
+https://dova-s.jp/bgm/play9573.html  
+
+#### SE
+コイン  
+https://dova-s.jp/se/play404.html  
