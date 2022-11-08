@@ -87,8 +87,8 @@ int main(void)
 	monitor_img.create(rect.bottom, rect.right, CV_8UC3); //RGBのみ。アルファちゃんねるを加えるにはCV_8UN4
 	
 	// 画像表示用のWindowを作成（ウィンドウの大きさをnative/2に固定する）
-	cv::namedWindow("Screenshot", cv::WINDOW_NORMAL);
-	cv::resizeWindow("Screenshot", GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+	//cv::namedWindow("Screenshot", cv::WINDOW_NORMAL);
+	//cv::resizeWindow("Screenshot", GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
 	
 
 	/**************↓適宜変更する*******************/
@@ -152,7 +152,7 @@ int main(void)
 		BitBlt(hMemDC, 0, 0, rect.right, rect.bottom, hDC, 0, 0, SRCCOPY);
 		GetDIBits(hMemDC, hBitmap, 0, rect.bottom, monitor_img.data, (BITMAPINFO*)&bmpInfo, DIB_RGB_COLORS);  //copy from hwindowCompatibleDC to hbwindow
 
-		cv::imshow("Screenshot", monitor_img); // スクリーンショットの表示
+		//cv::imshow("Screenshot", monitor_img); // スクリーンショットの表示
 		
 		//cv::Mat target = getMat(hWND);
 		//cv::cvtColor(target, target, cv::COLOR_BGR2HSV);
