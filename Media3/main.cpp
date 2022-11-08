@@ -263,6 +263,8 @@ int main(void)
 					heal1.amount -= 1;
 					sprintf_s(mmd_camera->camera, "item_%d", ids[0]);
 					printf("item_used: %d\nleft: %d\n", ids[0], heal1.amount);
+					PlaySound("item_use.wav", NULL, SND_FILENAME);
+					prevMusicFlag = 99;
 					break;
 				}
 				else {
@@ -275,6 +277,8 @@ int main(void)
 					attack1.amount -= 1;
 					sprintf_s(mmd_camera->camera, "item_%d", ids[0]);
 					printf("item_used: %d\nleft: %d\n", ids[0], attack1.amount);
+					PlaySound("item_use.wav", NULL, SND_FILENAME);
+					prevMusicFlag = 99;
 					break;
 				}
 				else {
