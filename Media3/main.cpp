@@ -140,10 +140,10 @@ int main(void)
 	//event = "";
 	
 	int musicFlag = 0;
-	int prevMusicFlag = musicFlag;
+	int prevMusicFlag = 99;
 	
 	//音楽再生
-	PlaySound("default_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	//PlaySound("default_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	
 	while (1) {
 		cv::Mat input;
@@ -181,34 +181,29 @@ int main(void)
 				printf("Marker Mode Disabled\n");
 			}
 			else if (mmdIds[0] == 10) {
-				musicFlag == 0;
-				printf("MF0");
+				musicFlag = 0;
 			}
 			else if (mmdIds[0] == 11) {
-				musicFlag == 1;
-				printf("MF1");
+				musicFlag = 1;
 			}
 			else if (mmdIds[0] == 12) {
-				musicFlag == 2;
-				printf("MF2");
+				musicFlag = 2;
 			}
 		}
 
 		//音楽再生する 変数が変化していない場合は変更しない
 		if (musicFlag != prevMusicFlag) {
 			if (musicFlag == 0) {
-				//PlaySound(NULL, 0, 0);
 				PlaySound("default_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 			}
 			else if (musicFlag == 1) {
-				//PlaySound(NULL, 0, 0);
 				PlaySound("battle_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 			}
 			else if (musicFlag == 2) {
-				//PlaySound(NULL, 0, 0);
 				PlaySound("boss_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 			}
 		}
+		prevMusicFlag = musicFlag;
 
 		/*
 		正規表現でやろうとしたけどうまくいかんかった
@@ -235,12 +230,15 @@ int main(void)
 					printf("%sが追加され%d個になりました\n", heal1.name.c_str(), heal1.amount);
 					sprintf_s(mmd_camera->camera, "item_registerd");
 					PlaySound("get.wav", NULL, SND_FILENAME);
+					prevMusicFlag = 99;
 					break;
 
 				case 20:
 					attack1.amount += 1;
 					printf("%sが追加され%d個になりました\n", attack1.name.c_str(), attack1.amount);
 					sprintf_s(mmd_camera->camera, "item_registerd");
+					PlaySound("get.wav", NULL, SND_FILENAME);
+					prevMusicFlag = 99;
 					break;
 				}
 			}
@@ -292,7 +290,6 @@ int main(void)
 		//printf("%d\n", flag);
 		//printf("%s\n", mmd_camera->event);
 
-		prevMusicFlag = musicFlag;
 
 		int key = cv::waitKey(15);/* キー入力，数値は入力待ち時間(ミリ秒)*/
 
