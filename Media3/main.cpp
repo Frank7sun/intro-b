@@ -41,6 +41,7 @@ int getItemId(int ids) {
 		return 10;
 	}
 	if (ids >= 20 && ids <= 29){
+		marker[ids] = 1;
 		return 20;
 	}
 }
@@ -50,7 +51,7 @@ bool idCheck(int ids){
 	if (marker[ids] == 1) {
 		return false;
 	}
-	else {
+	else if(marker[ids] == 0) {
 		return true;
 	} 
 }
