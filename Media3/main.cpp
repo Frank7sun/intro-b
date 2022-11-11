@@ -44,6 +44,10 @@ int getItemId(int ids) {
 		marker[ids] = 1;
 		return 20;
 	}
+	if (ids >= 50 && ids <= 59) {
+		marker[ids] = 1;
+		return 50;
+	}
 }
 
 //引数のidが使用済みかチェック
@@ -192,7 +196,7 @@ int main(void)
 			}
 		}
 
-		//音楽再生する 変数が変化していない場合は変更しない
+		//BGM切り替え
 		if (musicFlag != prevMusicFlag) {
 			if (musicFlag == 0) {
 				PlaySound("default_bgm.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -238,6 +242,13 @@ int main(void)
 					attack1.amount += 1;
 					printf("%sが追加され%d個になりました\n", attack1.name.c_str(), attack1.amount);
 					sprintf_s(mmd_camera->camera, "item_registerd");
+					PlaySound("get.wav", NULL, SND_FILENAME);
+					prevMusicFlag = 99;
+					break;
+					
+				case 50:
+					printf("はずれカードが登録されました\n");
+					sprintf_s(mmd_camera->camera, "empty_registerd");
 					PlaySound("get.wav", NULL, SND_FILENAME);
 					prevMusicFlag = 99;
 					break;
