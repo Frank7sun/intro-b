@@ -269,7 +269,7 @@ int main(void)
 			cv::Point2f center = corners[0][0];
 
 			//検出したマーカーのidが10の場合 回復薬使用
-			switch (ids[0]) {
+			switch (getItemId(ids[0])) {
 			case 10:
 				if (heal1.amount > 0) {
 					heal1.amount -= 1;

@@ -4,23 +4,30 @@
 20 ~ 29 攻撃増加アイテムに割当  
 30 ~ 39 ダメージ軽減アイテム  
 40 ~ 49 フラグ用アイテム  
+50 ~ 59 はずれアイテム
 
 ## MMD用マーカーID
 0: 読み取りなし  
 1: アイテム登録  
 2: アイテム使用  
+10: デフォルトBGM
+11: 戦闘BGM
+12: ボスBGM
 
 ## MMDに送信するメッセージ
 画面上のマーカーでモードが変更されたとき  
 MMD_CAMERA_GET|mode_changed  
 
 アイテムが登録されたとき  
-MMD_CAMERA_GET|item_registerd  
+MMD_CAMERA_GET|item_registerd 
 
-アイテム使用時(%dにはアイテムidが入る)  
-MMD_CAMERA_GET|item_%d  
+はずれアイテムが登録されたとき
+MMD_CAMERA_GET|empty_registerd
+
+アイテム使用時([アイテムID]には数字が入る)  
+MMD_CAMERA_GET|item_[アイテムID]
  
-アイテムの残量なし  
+アイテム使おうとしたけどアイテムの残量なし  
 MMD_CAMERA_GET|emptyItem 
 
 ## 動作説明
